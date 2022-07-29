@@ -3,7 +3,11 @@ import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 
-const AuthForm = () => {
+interface IProps {
+  title: string
+}
+
+const AuthForm = ({title} : IProps) => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,7 +35,7 @@ const AuthForm = () => {
     }
     const onSubmit = (e: any) => {
       e.preventDefault()
-      if (email && password){
+      if (email && password && title === "로그인"){
         axios.post(`http://localhost:8080/users/login`, {email, password})
         .then((res) => {
           if(res.data.token){
@@ -40,14 +44,23 @@ const AuthForm = () => {
           }
         }
         )
-        .catch((err) => alert("로그인에 실패했습니다."))
+        .catch((err) => alert(`${title}에 실패했습니다.`))
+      } else if (email && password && title==="회원가입"){
+        axios.post(`http://localhost:8080/users/create`, {email, password})
+        .then((res) => {
+          if(res.data.token){
+            navigate('/login')
+          }
+        }
+        )
+        .catch((err) => alert(`${title}에 실패했습니다.`))
       }
     }
 
     return (
         <Box>
             <Form onSubmit={onSubmit}>
-                <Label>환영합니다!</Label> 
+                <Label>{title}페이지</Label> 
                 <Input 
                   type="email" 
                   id="email" 
@@ -62,7 +75,7 @@ const AuthForm = () => {
                   onChange = {onChangePassword}
                   placeholder='비밀번호'/>
                 {PasswordMessage && <Error>{PasswordMessage}</Error>}
-                <Button type="submit"> 로그인 </Button>
+                <Button type="submit"> {title} </Button>
             </Form>
         </Box>
     )

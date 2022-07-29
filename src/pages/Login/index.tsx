@@ -5,7 +5,7 @@ import { Container } from "./style";
 const Login = () => {
     return (
         <Container>
-            <AuthForm />
+            <AuthForm title = {"로그인"}/>
         </Container>
     )
 }
