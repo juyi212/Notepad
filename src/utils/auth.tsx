@@ -1,0 +1,1 @@
+export const axiosHeader = localStorage.getItem('token') ?? "null"

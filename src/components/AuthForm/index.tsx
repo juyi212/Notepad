@@ -33,7 +33,7 @@ const AuthForm = ({title} : IProps) => {
       }
 
     }
-    const onSubmit = (e: any) => {
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       if (email && password && title === "로그인"){
         axios.post(`http://localhost:8080/users/login`, {email, password})
