@@ -5,6 +5,7 @@ import {Container} from "../Login/style"
 import axios from 'axios';
 import { ITodoList } from "../../typings/db";
 import Todo from "../../components/Todo";
+import { type } from "os";
 
 
 const Home = () => {
@@ -13,7 +14,7 @@ const Home = () => {
     const fetchData = useCallback(() => {
         axios.get('http://localhost:8080/todos', {headers: {'Authorization': axiosHeader}})
         .then((res) => {
-            setTodoList(res.data.data)    
+            setTodoList(res.data.data)
         })
         .catch((err) => { console.log(err)})
     }, [todoList])
@@ -26,7 +27,7 @@ const Home = () => {
     return (
         <Container>
             <TodoFactory fetchData ={fetchData}/>
-            <div>
+            <div style={{marginTop: "40px"}}>
                 {todoList?.map(todo => (
                     <Todo todo={todo}/>
                 ))}

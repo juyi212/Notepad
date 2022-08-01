@@ -1,9 +1,11 @@
 
 export interface ITodoList {
-    title: string, 
-    content: string, 
-    id: string,
-    createAt: string,
-    updateAt: string,
-
+    content: string;
+    createdAt: string;
+    id: string;
+    title: string;
+    updatedAt: string;
 }
+
+
+

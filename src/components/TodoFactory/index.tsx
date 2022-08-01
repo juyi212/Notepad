@@ -1,6 +1,7 @@
 import axios from 'axios';
 import useInput from "../../hooks/useInput";
 import { axiosHeader } from '../../utils/auth';
+import { Form, Header, Input, InputBox } from './style';
 
 
 interface IProps {
@@ -29,12 +30,21 @@ const TodoFactory = ({fetchData} : IProps) => {
     }
 
     return (
-        <form onSubmit={onSubmit}>
-            <h1>TodoList</h1>
-            <input type="text" onChange={onChangeTitle} value={title}/>
-            <input type="text" onChange={onChangeContent} value={content}/>
-            <button type="submit">+</button>
-        </form>
+        <>
+        <Header>TodoList</Header>
+        <Form onSubmit={onSubmit}>
+            <InputBox>
+                <label>제목:&nbsp;&nbsp;</label>
+                <Input type="text" onChange={onChangeTitle} value={title}/>
+            </InputBox>
+            <br></br>
+            <InputBox>
+                <label>내용: &nbsp;&nbsp;</label>
+                <Input type="text" onChange={onChangeContent} value={content}/>
+            </InputBox>
+            <button type="submit">Todo 추가</button>
+        </Form>
+        </>
     )
 }
 
