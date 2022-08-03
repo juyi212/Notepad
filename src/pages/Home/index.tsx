@@ -5,10 +5,11 @@ import {Container} from "../Login/style"
 import axios from 'axios';
 import { ITodoList } from "../../typings/db";
 import Todo from "../../components/Todo";
-import { type } from "os";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = () => {
+    const navigate = useNavigate()
     const [todoList, setTodoList] = useState<ITodoList[]>([])
     // todolist 받아오기 
     const fetchData = useCallback(() => {
@@ -23,13 +24,17 @@ const Home = () => {
         fetchData()
     },[])
 
+    useEffect(() => {
+        if (localStorage.getItem('token') === null ) navigate('/login');
+      }, []);
+
 
     return (
         <Container>
             <TodoFactory fetchData ={fetchData}/>
             <div style={{marginTop: "40px"}}>
                 {todoList?.map(todo => (
-                    <Todo todo={todo}/>
+                    <Todo todo={todo} fetchData= {fetchData}/>
                 ))}
             </div>
 
