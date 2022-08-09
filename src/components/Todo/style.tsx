@@ -4,20 +4,24 @@ export const TodoBox = styled.div`
     display: flex;
     height: 50px;
     margin-top: 10px;
-    font-size: 20px;
     justify-content: space-between;
     align-items: center;
-    & a {
-        color: black;
-        text-decoration: none;
-    }
     & div {
         display:flex;
-        & p {
+        & span {
             margin-left: 10px;
         }
     }
 `
+
+export const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+export const Title = styled.span`
+    font-size: 20px;
+`
+
 
 export const UpdateBox = styled.div`
     height: 90px;

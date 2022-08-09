@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {Input, TodoBox, UpdateBox, UpdateButton} from './style';
+import {Content, Input, Title, TodoBox, UpdateBox, UpdateButton} from './style';
 import axios from 'axios';
 import { axiosHeader } from "../../utils/auth";
 import { useState } from "react";
@@ -46,7 +46,7 @@ const Todo = React.memo(({todo, fetchData} : ITodo) => {
             <UpdateBox>
             <div>
                 <label>제목:&nbsp;&nbsp;</label>
-                <Input type="text" onChange={onChangeTitle} value={title} />
+                <Input type="text" onChange={onChangeTitle} value={title} placeholder="제목을 입력해주세요."/>
                 <br></br>
                 <label>내용: &nbsp;&nbsp;</label>
                 <Input type="text" onChange={onChangeContent} value={content} />
@@ -57,10 +57,13 @@ const Todo = React.memo(({todo, fetchData} : ITodo) => {
             </UpdateButton>
             </UpdateBox> :
             <TodoBox>
-                <p>{todo.title}</p>
+                <Content>
+                    <Title>{todo.title}</Title>
+                    <span>{todo.content}</span>
+                </Content>
                 <div>
-                    <p onClick={onUpdateTodo}>수정</p>
-                    <p onClick={onDeleteTodo}>X</p>
+                    <span onClick={onUpdateTodo}>수정</span>
+                    <span onClick={onDeleteTodo}>X</span>
                 </div>
             </TodoBox>
             }

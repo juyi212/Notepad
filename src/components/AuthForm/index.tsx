@@ -2,6 +2,7 @@ import { Box, Button, Form, Input, Label, Error } from "./style";
 import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
+import {LoginAPI, SignupAPI} from '../../api/auth'
 
 interface IProps {
   title: string
@@ -33,27 +34,27 @@ const AuthForm = ({title} : IProps) => {
       }
 
     }
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       if (email && password && title === "로그인"){
-        axios.post(`http://localhost:8080/users/login`, {email, password})
-        .then((res) => {
-          if(res.data.token){
-            localStorage.setItem('token', res.data.token)
+        try {
+          const loginResponse = await LoginAPI({email,password})
+          if (loginResponse.token) {
+            localStorage.setItem('token', loginResponse.token)
             navigate('/')
-          }
+          } 
+        } catch(error){
+          alert("로그인에 실패했습니다.")
         }
-        )
-        .catch((err) => alert(`${title}에 실패했습니다.`))
+
       } else if (email && password && title==="회원가입"){
-        axios.post(`http://localhost:8080/users/create`, {email, password})
-        .then((res) => {
-          if(res.data.token){
-            navigate('/login')
-          }
+        try {
+          await SignupAPI({email,password})
+          navigate('/login')
         }
-        )
-        .catch((err) => alert(`${title}에 실패했습니다.`))
+        catch(error: any) {
+          alert(error.response.data.details)
+        }
       }
     }
 
