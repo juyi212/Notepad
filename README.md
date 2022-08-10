@@ -1,5 +1,18 @@
 # :: 원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제
 
+### Refactoring 
+**"API 호출 로직을 view 로직과 분리하는 것"** <br>
+의무적으로하던 분리를 이번 강의를 통해서 이유를 알게 되었고, 다시 하나하나 관심사를 분리해야겠다는 마음으로 API 호출 로직과 view를 분리하였다. 
+(ReactQuery 도입 전 입니다.) 
+```
+export const LoginAPI = async (body: EnterFormState) => {
+    const { data } = await axios.post(`{basicURL}/login`, body)
+    return data;
+}
+...
+```
+
+
 ## 자기소개 
 ```
 안녕하세요 저는 신입 프론트엔드 개발자 이주이입니다. 해당 과정을 통해서 
