@@ -6,18 +6,20 @@ import axios from 'axios';
 import { ITodoList } from "../../typings/db";
 import Todo from "../../components/Todo";
 import { useNavigate } from "react-router-dom";
+import { getTodoList } from "../../api/todo";
 
 
 const Home = () => {
     const navigate = useNavigate()
     const [todoList, setTodoList] = useState<ITodoList[]>([])
     // todolist 받아오기 
-    const fetchData = useCallback(() => {
-        axios.get('http://localhost:8080/todos', {headers: {'Authorization': axiosHeader}})
-        .then((res) => {
-            setTodoList(res.data.data)
-        })
-        .catch((err) => { console.log(err)})
+    const fetchData = useCallback(async() => {
+        try {
+            const todoList = await getTodoList(axiosHeader)
+            setTodoList(todoList.data)
+        } catch(error: any) {
+            alert(error.response.data.details)
+        }
     }, [todoList])
 
     useEffect(() => {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createTodo } from '../../api/todo';
 import useInput from "../../hooks/useInput";
 import { axiosHeader } from '../../utils/auth';
 import { Form, Header, Input, InputBox } from './style';
@@ -17,15 +18,15 @@ const TodoFactory = ({fetchData} : IProps) => {
  
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (title && content) {            
-            axios.post(`http://localhost:8080/todos`, { title, content}, {headers: {'Authorization': axiosHeader}})
-            .then((res) => {
+        if (title && content) {      
+            try {
+                createTodo({title, content, axiosHeader})
                 setTitle('')
                 setContent('')
                 fetchData()
-              }
-              )
-              .catch((err) => alert(`TodoList생성에 실패했습니다.`))
+            }catch(error: any){
+                alert(error)
+            }
         }
     }
 

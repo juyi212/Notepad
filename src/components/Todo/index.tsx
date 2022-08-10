@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
 import {Content, Input, Title, TodoBox, UpdateBox, UpdateButton} from './style';
-import axios from 'axios';
 import { axiosHeader } from "../../utils/auth";
 import { useState } from "react";
 import useInput from "../../hooks/useInput";
 import React from "react";
+import { deleteTodo, updateTodo } from "../../api/todo";
 
 interface ITodo {
     todo: any;
@@ -19,24 +18,26 @@ const Todo = React.memo(({todo, fetchData} : ITodo) => {
     const onUpdateTodo = () => setUpdateState((prev) => !prev)
     
     const onNoUpdate = () => setUpdateState(false)
-
+    const todoId = todo.id
     const onUpdateCompleted = () => {
         if ((title !== todo.title) && (content !== todo.content)) {
-            axios.put(`http://localhost:8080/todos/${todo.id}`, {title, content}, {headers: {'Authorization': axiosHeader}})
-            .then((res) => {
+            try {
+                updateTodo({todoId, title, content, axiosHeader})
                 fetchData()
                 setUpdateState(false)
-            })
-            .catch((err) => { console.log(err)})
+            }catch(error) {
+                console.log(error)
+            }
         }
     }
 
     const onDeleteTodo = () => {
-        axios.delete(`http://localhost:8080/todos/${todo.id}`, {headers: {'Authorization': axiosHeader}})
-        .then((res) => {
+        try {
+            deleteTodo({todoId, axiosHeader})
             fetchData()
-        })
-        .catch((err) => { console.log(err)})
+        }catch(error) {
+            alert(error)
+        }
     }
 
 
