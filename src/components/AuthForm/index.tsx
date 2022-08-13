@@ -15,7 +15,9 @@ const AuthForm = ({title} : IProps) => {
     const [emailMessage, setEmailMessage] = useState('')
     const [PasswordMessage, setPasswordMessage] = useState('')
 
-    const onChangeEmail = (e: { target: { value: string; }; }) => {
+    const onChangeEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
+      // e: { target: { value: string; };} 와 e:React.ChangeEvent<HTMLInputElement>
+      // 전자가 더 디테일해보이긴 한데,, 잘 모르겠네 의견을 듣고 싶다. 
       const emailRegex =  /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
       setEmail(e.target.value)
       if (!emailRegex.test(e.target.value)){
@@ -25,7 +27,7 @@ const AuthForm = ({title} : IProps) => {
       }
     }
 
-    const onChangePassword = (e: { target: { value: string; };}) => {
+    const onChangePassword = (e:React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value)
       if (e.target.value.length < 8) {
         setPasswordMessage('비밀번호 8자 이상 입력해주세요.')
