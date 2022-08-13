@@ -1,17 +1,12 @@
 import axios from "axios"
-import { useNavigate } from "react-router-dom";
+import { IUserFormState } from "../typings/db";
 
-export interface EnterFormState {
-    email: string;
-    password: string;
-}
-
-export const LoginAPI = async (body: EnterFormState) => {
+export const LoginAPI = async (body: IUserFormState) => {
     const { data } = await axios.post(`http://localhost:8080/users/login`, body)
     return data;
 }
 
-export const SignupAPI = async (body: EnterFormState) => {
+export const SignupAPI = async (body: IUserFormState) => {
     const { data } = await axios.post(`http://localhost:8080/users/create`, body)
     console.log()
     return data;

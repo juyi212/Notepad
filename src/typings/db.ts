@@ -1,3 +1,8 @@
+export interface IUserFormState {
+    email: string;
+    password: string;
+}
+
 
 export interface ITodoList {
     content: string;
