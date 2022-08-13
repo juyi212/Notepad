@@ -1,6 +1,6 @@
 import { Box, Button, Form, Input, Label, Error } from "./style";
 import { useState } from "react";
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom'
 import {LoginAPI, SignupAPI} from '../../api/auth'
 
@@ -44,7 +44,9 @@ const AuthForm = ({title} : IProps) => {
             navigate('/')
           } 
         } catch(error){
-          alert("로그인에 실패했습니다.")
+          if (error instanceof AxiosError){
+            alert(error.response?.data.details)
+          }
         }
 
       } else if (email && password && title==="회원가입"){
@@ -52,8 +54,10 @@ const AuthForm = ({title} : IProps) => {
           await SignupAPI({email,password})
           navigate('/login')
         }
-        catch(error: any) {
-          alert(error.response.data.details)
+        catch(error) {
+          if (error instanceof AxiosError){
+            alert(error.response?.data.details)
+          }
         }
       }
     }

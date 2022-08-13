@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import TodoFactory from "../../components/TodoFactory";
 import { axiosHeader } from "../../utils/auth";
 import {Container} from "../Login/style"
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ITodoList } from "../../typings/db";
 import Todo from "../../components/Todo";
 import { useNavigate } from "react-router-dom";
@@ -17,8 +17,10 @@ const Home = () => {
         try {
             const todoList = await getTodoList(axiosHeader)
             setTodoList(todoList.data)
-        } catch(error: any) {
-            alert(error.response.data.details)
+        } catch(error) {
+            if (error instanceof AxiosError){
+                alert(error)
+            }
         }
     }, [todoList])
 

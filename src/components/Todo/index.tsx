@@ -4,6 +4,7 @@ import { useState } from "react";
 import useInput from "../../hooks/useInput";
 import React from "react";
 import { deleteTodo, updateTodo } from "../../api/todo";
+import { AxiosError } from 'axios';
 
 interface ITodo {
     todo: any;
@@ -26,7 +27,9 @@ const Todo = React.memo(({todo, fetchData} : ITodo) => {
                 fetchData()
                 setUpdateState(false)
             }catch(error) {
-                console.log(error)
+                if (error instanceof AxiosError){
+                    alert(error.response?.data.details)
+                }
             }
         }
     }
@@ -35,8 +38,10 @@ const Todo = React.memo(({todo, fetchData} : ITodo) => {
         try {
             deleteTodo({todoId, axiosHeader})
             fetchData()
-        }catch(error) {
-            alert(error)
+        } catch(error) {
+            if (error instanceof AxiosError){
+                alert(error.response?.data.details)
+            }
         }
     }
 

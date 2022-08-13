@@ -30,7 +30,14 @@ export interface ToDoStateWithId extends ToDoState{
 
 
 export const getTodoList = async (axiosHeader : string) => {
-    const { data } = await axios.get(`http://localhost:8080/todos`, {headers: {'Authorization': axiosHeader}})
+                                  const { data } = await axios.get(
+                                    `http://localhost:8080/todos`, 
+                                    {
+                                      headers: {
+                                        'Authorization': axiosHeader
+                                      }
+                                    }
+                                    )
     return data;
 }
 
