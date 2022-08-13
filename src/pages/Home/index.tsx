@@ -2,21 +2,23 @@ import { useCallback, useEffect, useState } from "react";
 import TodoFactory from "../../components/TodoFactory";
 import { axiosHeader } from "../../utils/auth";
 import {Container} from "../Login/style"
-import axios, { AxiosError } from 'axios';
+import axios, { Axios, AxiosError } from 'axios';
 import { ITodoList } from "../../typings/db";
 import Todo from "../../components/Todo";
 import { useNavigate } from "react-router-dom";
-import { getTodoList } from "../../api/todo";
+import useGetTodoList from "../../hooks/query/useGetTodoList";
 
 
 const Home = () => {
     const navigate = useNavigate()
-    const [todoList, setTodoList] = useState<ITodoList[]>([])
-    // todolist 받아오기 
+
+    // error 처리는 나중에 
+    const {data:todoList, error} = useGetTodoList(axiosHeader)
+
     const fetchData = useCallback(async() => {
         try {
-            const todoList = await getTodoList(axiosHeader)
-            setTodoList(todoList.data)
+            // const todoList = await getTodoList(axiosHeader)
+            // setTodoList(todoList.data)
         } catch(error) {
             if (error instanceof AxiosError){
                 alert(error)
@@ -24,9 +26,7 @@ const Home = () => {
         }
     }, [todoList])
 
-    useEffect(() => {
-        fetchData()
-    },[])
+
 
     useEffect(() => {
         if (localStorage.getItem('token') === null ) navigate('/login');
@@ -37,7 +37,7 @@ const Home = () => {
         <Container>
             <TodoFactory fetchData ={fetchData}/>
             <div style={{marginTop: "40px"}}>
-                {todoList?.map(todo => (
+                {todoList?.data.map(todo => (
                     <Todo todo={todo} fetchData= {fetchData}/>
                 ))}
             </div>

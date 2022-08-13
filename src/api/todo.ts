@@ -3,7 +3,7 @@ import { IToDoStateWithId,ITokenAndId, ITodoList, IToDoState } from "../typings/
 
 
 
-export const getTodoList = async (axiosHeader : string) => {
+export const getTodoList = async (axiosHeader : string):Promise<{data: ITodoList[]}> => {
                                   const { data } = await axios.get(
                                     `http://localhost:8080/todos`, 
                                     {
@@ -32,7 +32,7 @@ export const createTodo = async ({
 
 export const deleteTodo = async ({ 
                             todoId, axiosHeader
-                            }: ITokenAndId): Promise<{ data: ITodoList }> => {
+                            }: ITokenAndId): Promise<{ data: null }> => {
                             const data  = axios.delete(
                               `http://localhost:8080/todos/${todoId}`, 
                               {

@@ -5,6 +5,9 @@ import useInput from "../../hooks/useInput";
 import React from "react";
 import { deleteTodo, updateTodo } from "../../api/todo";
 import { AxiosError } from 'axios';
+import useDeleteTodo from '../../hooks/query/useDeleteTodo';
+import { useQueryClient } from '@tanstack/react-query';
+import useGetTodoList from '../../hooks/query/useGetTodoList'
 
 interface ITodo {
     todo: any;
@@ -12,9 +15,17 @@ interface ITodo {
 }
 
 const Todo = React.memo(({todo, fetchData} : ITodo) => {
+    const queryClient = useQueryClient();
     const [updateState, setUpdateState] = useState(false)
     const [title, onChangeTitle, setTitle] = useInput(todo.title)
     const [content, onChangeContent, setContent] = useInput(todo.content)
+
+
+    const { mutate: deleteTodo } = useDeleteTodo({
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(useGetTodoList.getKey(axiosHeader))
+        }
+    })
 
     const onUpdateTodo = () => setUpdateState((prev) => !prev)
     
@@ -35,14 +46,7 @@ const Todo = React.memo(({todo, fetchData} : ITodo) => {
     }
 
     const onDeleteTodo = () => {
-        try {
-            deleteTodo({todoId, axiosHeader})
-            fetchData()
-        } catch(error) {
-            if (error instanceof AxiosError){
-                alert(error.response?.data.details)
-            }
-        }
+        deleteTodo({todoId, axiosHeader})
     }
 
 
