@@ -3,11 +3,10 @@ import { axiosHeader } from "../../utils/auth";
 import { useState } from "react";
 import useInput from "../../hooks/useInput";
 import React from "react";
-import { deleteTodo, updateTodo } from "../../api/todo";
-import { AxiosError } from 'axios';
 import useDeleteTodo from '../../hooks/query/useDeleteTodo';
 import { useQueryClient } from '@tanstack/react-query';
 import useGetTodoList from '../../hooks/query/useGetTodoList'
+import useUpdateTodo from '../../hooks/query/useUpdateTodo';
 
 interface ITodo {
     todo: any;
@@ -27,21 +26,20 @@ const Todo = React.memo(({todo, fetchData} : ITodo) => {
         }
     })
 
+    const { mutate: updateTodo } = useUpdateTodo({
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(useGetTodoList.getKey(axiosHeader))
+        }
+    })
+
     const onUpdateTodo = () => setUpdateState((prev) => !prev)
     
     const onNoUpdate = () => setUpdateState(false)
     const todoId = todo.id
     const onUpdateCompleted = () => {
-        if ((title !== todo.title) && (content !== todo.content)) {
-            try {
-                updateTodo({todoId, title, content, axiosHeader})
-                fetchData()
-                setUpdateState(false)
-            }catch(error) {
-                if (error instanceof AxiosError){
-                    alert(error.response?.data.details)
-                }
-            }
+        if ((title !== todo.title) || (content !== todo.content)) {
+            updateTodo({todoId, title, content, axiosHeader})
+            setUpdateState(false)
         }
     }
 

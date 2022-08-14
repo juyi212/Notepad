@@ -3,6 +3,9 @@ import { useState } from "react";
 import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom'
 import {LoginAPI, SignupAPI} from '../../api/auth'
+import { sign } from "crypto";
+import useLogin from "../../hooks/query/useLogin";
+import useSignup from "../../hooks/query/useSignup";
 
 interface IProps {
   title: string
@@ -14,6 +17,29 @@ const AuthForm = ({title} : IProps) => {
     const [password, setPassword] = useState('');
     const [emailMessage, setEmailMessage] = useState('')
     const [PasswordMessage, setPasswordMessage] = useState('')
+
+    const {mutate: userLogin } = useLogin({
+      onSuccess: (res) => {
+        localStorage.setItem('token', res.token)
+        navigate('/')
+      },
+      onError: (error) => {
+        if(error instanceof AxiosError){
+          alert(error.response?.data.details)
+        }
+      }
+    })
+
+    const {mutate: userSignup } = useSignup({
+      onSuccess: () => {
+        navigate('/login')
+      },
+      onError: (error) => {
+        if(error instanceof AxiosError){
+          alert(error.response?.data.details)
+        }
+      }
+    })
 
     const onChangeEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
       // e: { target: { value: string; };} 와 e:React.ChangeEvent<HTMLInputElement>
@@ -39,28 +65,10 @@ const AuthForm = ({title} : IProps) => {
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       if (email && password && title === "로그인"){
-        try {
-          const loginResponse = await LoginAPI({email,password})
-          if (loginResponse.token) {
-            localStorage.setItem('token', loginResponse.token)
-            navigate('/')
-          } 
-        } catch(error){
-          if (error instanceof AxiosError){
-            alert(error.response?.data.details)
-          }
-        }
+          userLogin({email,password})
 
       } else if (email && password && title==="회원가입"){
-        try {
-          await SignupAPI({email,password})
-          navigate('/login')
-        }
-        catch(error) {
-          if (error instanceof AxiosError){
-            alert(error.response?.data.details)
-          }
-        }
+        userSignup({email,password})
       }
     }
 
