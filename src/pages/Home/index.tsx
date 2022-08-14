@@ -7,6 +7,7 @@ import { ITodoList } from "../../typings/db";
 import Todo from "../../components/Todo";
 import { useNavigate } from "react-router-dom";
 import useGetTodoList from "../../hooks/query/useGetTodoList";
+import { useQuery } from "@tanstack/react-query";
 
 
 const Home = () => {
@@ -29,7 +30,8 @@ const Home = () => {
 
 
     useEffect(() => {
-        if (localStorage.getItem('token') === null ) navigate('/login');
+        // const isLoggIn = useQuery(['token'], () => localStorage.getItem('token'))
+        // if (localStorage.getItem('token') === null ) navigate('/login');
       }, []);
 
 

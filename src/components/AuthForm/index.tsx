@@ -4,8 +4,8 @@ import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom'
 import {LoginAPI, SignupAPI} from '../../api/auth'
 import { sign } from "crypto";
-import useLogin from "../../hooks/query/useLogin";
-import useSignup from "../../hooks/query/useSignup";
+import {useLogin} from "../../hooks/query/useLogin";
+import {useSignup} from "../../hooks/query/useSignup";
 
 interface IProps {
   title: string
@@ -18,28 +18,9 @@ const AuthForm = ({title} : IProps) => {
     const [emailMessage, setEmailMessage] = useState('')
     const [PasswordMessage, setPasswordMessage] = useState('')
 
-    const {mutate: userLogin } = useLogin({
-      onSuccess: (res) => {
-        localStorage.setItem('token', res.token)
-        navigate('/')
-      },
-      onError: (error) => {
-        if(error instanceof AxiosError){
-          alert(error.response?.data.details)
-        }
-      }
-    })
+    const {mutate: userLogin, isLoading, error } = useLogin()
 
-    const {mutate: userSignup } = useSignup({
-      onSuccess: () => {
-        navigate('/login')
-      },
-      onError: (error) => {
-        if(error instanceof AxiosError){
-          alert(error.response?.data.details)
-        }
-      }
-    })
+    const {mutate: userSignup } = useSignup()
 
     const onChangeEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
       // e: { target: { value: string; };} 와 e:React.ChangeEvent<HTMLInputElement>
