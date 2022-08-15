@@ -4,8 +4,7 @@ import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom'
 import {LoginAPI, SignupAPI} from '../../api/auth'
 import { sign } from "crypto";
-import {useLogin} from "../../hooks/query/useLogin";
-import {useSignup} from "../../hooks/query/useSignup";
+import {useLogin, useSignup} from "../../hooks/query/auth";
 
 interface IProps {
   title: string

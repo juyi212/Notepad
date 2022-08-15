@@ -1,22 +1,14 @@
-import axios from 'axios';
-import { createTodo } from '../../api/todo';
-import { useCreateTodo } from '../../hooks/query/useCreateTodo';
+import { useCreateTodo } from '../../hooks/query/todo';
 import useInput from "../../hooks/useInput";
 import { axiosHeader } from '../../utils/auth';
 import { Form, Header, Input, InputBox } from './style';
 
 
-interface IProps {
-    fetchData: () => void;
-}
-
-
-
-const TodoFactory = ({fetchData} : IProps) => {
+const TodoFactory = () => {
     const [title, onChangeTitle, setTitle] = useInput("")
     const [content, onChangeContent, setContent] = useInput("")
     // 성공했을 때, getList 업데이트 필요 
-    const { mutate: createTodo } = useCreateTodo()
+    const { mutate: createTodo, isLoading, error } = useCreateTodo()
 
  
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

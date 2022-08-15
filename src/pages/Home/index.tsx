@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import TodoFactory from "../../components/TodoFactory";
 import { axiosHeader } from "../../utils/auth";
 import {Container} from "../Login/style"
-import axios, { Axios, AxiosError } from 'axios';
-import { ITodoList } from "../../typings/db";
+import  { AxiosError } from 'axios';
 import Todo from "../../components/Todo";
 import { useNavigate } from "react-router-dom";
-import useGetTodoList from "../../hooks/query/useGetTodoList";
-import { useQuery } from "@tanstack/react-query";
+import {useGetTodoList} from "../../hooks/query/todo";
+
 
 
 const Home = () => {
@@ -15,17 +14,6 @@ const Home = () => {
 
     // error 처리는 나중에 
     const {data:todoList, error} = useGetTodoList(axiosHeader)
-
-    const fetchData = useCallback(async() => {
-        try {
-            // const todoList = await getTodoList(axiosHeader)
-            // setTodoList(todoList.data)
-        } catch(error) {
-            if (error instanceof AxiosError){
-                alert(error)
-            }
-        }
-    }, [todoList])
 
 
 
@@ -37,10 +25,10 @@ const Home = () => {
 
     return (
         <Container>
-            <TodoFactory fetchData ={fetchData}/>
+            <TodoFactory />
             <div style={{marginTop: "40px"}}>
                 {todoList?.data.map(todo => (
-                    <Todo todo={todo} fetchData= {fetchData}/>
+                    <Todo todo={todo} />
                 ))}
             </div>
 

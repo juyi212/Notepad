@@ -3,34 +3,23 @@ import { axiosHeader } from "../../utils/auth";
 import { useState } from "react";
 import useInput from "../../hooks/useInput";
 import React from "react";
-import useDeleteTodo from '../../hooks/query/useDeleteTodo';
+import {useDeleteTodo, useUpdateTodo} from '../../hooks/query/todo';
 import { useQueryClient } from '@tanstack/react-query';
-import useGetTodoList from '../../hooks/query/useGetTodoList'
-import useUpdateTodo from '../../hooks/query/useUpdateTodo';
+import { ITodoList } from '../../typings/db';
 
 interface ITodo {
-    todo: any;
-    fetchData: () => void;
+    todo: ITodoList;
 }
 
-const Todo = React.memo(({todo, fetchData} : ITodo) => {
-    const queryClient = useQueryClient();
+const Todo = React.memo(({todo} : ITodo) => {
     const [updateState, setUpdateState] = useState(false)
     const [title, onChangeTitle, setTitle] = useInput(todo.title)
     const [content, onChangeContent, setContent] = useInput(todo.content)
 
 
-    const { mutate: deleteTodo } = useDeleteTodo({
-        onSuccess: async () => {
-            await queryClient.invalidateQueries(useGetTodoList.getKey(axiosHeader))
-        }
-    })
+    const { mutate: deleteTodo, isLoading, error } = useDeleteTodo()
 
-    const { mutate: updateTodo } = useUpdateTodo({
-        onSuccess: async () => {
-            await queryClient.invalidateQueries(useGetTodoList.getKey(axiosHeader))
-        }
-    })
+    const { mutate: updateTodo } = useUpdateTodo()
 
     const onUpdateTodo = () => setUpdateState((prev) => !prev)
     
