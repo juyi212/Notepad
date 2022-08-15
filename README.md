@@ -28,19 +28,21 @@ export const useLogin = () => {
   };
 ```
 
+
 **"React-query 도입 전과 후"** <br>
 SWR 을 사용해보았지만, react-query도 사용해 보고싶다는 생각을 하긴했다. <br>
 이번 사전 과제를 통해 도입하게 되었는데,  두 개의 큰 차이점은 없었다.  <br>
 ( 즉, SWR 도입했을 때 느낌은 편하고 정교하다였는데 그 느낌이 똑같다는 말!  )   
 
-**<도입 후 느낀점>**
+**<느낀점>**
 - 장황하지 않는 코드 ( 동일한 코드를 최소화 할 수 있었음 )
 - api 요청 후 성공했을 시, 다시 업데이트해야할 부분들 키값으로 서버에 데이터 요청
 
 참고 문서 : [https://tech.kakaopay.com/post/react-query-1/](https://tech.kakaopay.com/post/react-query-1/)
 
-
-
+<br>
+<br>
+<br>
 
 ## 자기소개 
 ```
