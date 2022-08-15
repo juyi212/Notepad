@@ -4,14 +4,15 @@ import { useState } from "react";
 import useInput from "../../hooks/useInput";
 import React from "react";
 import {useDeleteTodo, useUpdateTodo} from '../../hooks/query/todo';
-import { useQueryClient } from '@tanstack/react-query';
 import { ITodoList } from '../../typings/db';
+import { Link } from 'react-router-dom';
 
-interface ITodo {
+interface propsTodo {
     todo: ITodoList;
+    onDetailHandler: (id:string) => void;
 }
 
-const Todo = React.memo(({todo} : ITodo) => {
+const Todo = React.memo(({todo, onDetailHandler} : propsTodo) => {
     const [updateState, setUpdateState] = useState(false)
     const [title, onChangeTitle, setTitle] = useInput(todo.title)
     const [content, onChangeContent, setContent] = useInput(todo.content)
@@ -54,9 +55,11 @@ const Todo = React.memo(({todo} : ITodo) => {
             </UpdateButton>
             </UpdateBox> :
             <TodoBox>
-                <Content>
-                    <Title>{todo.title}</Title>
-                    <span>{todo.content}</span>
+                <Content onClick= {() => onDetailHandler(todo.id)}>
+                    <Link to={`/todos/${todo.id}`}>
+                        <Title>{todo.title}</Title>
+                        <span>{todo.content}</span>
+                    </Link>
                 </Content>
                 <div>
                     <span onClick={onUpdateTodo}>수정</span>

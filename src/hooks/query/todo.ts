@@ -1,5 +1,6 @@
 import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { createTodo, deleteTodo, getTodoList, updateTodo } from "../../api/todo"
+import axios from "axios"
+import { createTodo, deleteTodo, getTodoDetail, getTodoList, updateTodo } from "../../api/todo"
 import { ITodoList, IToDoState, IToDoStateWithId, ITokenAndId } from "../../typings/db"
 import { axiosHeader } from "../../utils/auth"
 // import {useGetTodoList} from "./useGetTodoList"
@@ -15,6 +16,23 @@ export const useGetTodoList = (axiosHeader: string) => {
     }
   }
 useGetTodoList.getKey = (axiosHeader: string) => ["todoList", axiosHeader];
+
+
+
+export const useGetTodoDetail = ({ todoId, axiosHeader} : ITokenAndId) => {
+  const queryClient = useQueryClient()
+  const {data, error} = useQuery<{data: ITodoList}, Error>(
+    ['todoDetail', todoId],
+    () => getTodoDetail({todoId, axiosHeader}), 
+    {
+      enabled: !!todoId
+    }
+    )
+  return {
+    data, error
+  }
+}
+// useGetTodoDetail.getKey = (axiosHeader:string) => ['todoDetail', ]
 
 
 export const useCreateTodo = () => {

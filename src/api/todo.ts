@@ -1,5 +1,6 @@
 import axios from "axios"
 import { IToDoStateWithId,ITokenAndId, ITodoList, IToDoState } from "../typings/db";
+import { axiosHeader } from "../utils/auth";
 
 
 
@@ -11,6 +12,22 @@ export const getTodoList = async (axiosHeader : string):Promise<{data: ITodoList
                                         'Authorization': axiosHeader
                                       }
                                     })
+    return data;
+}
+
+
+export const getTodoDetail = async({
+                                    todoId, axiosHeader
+                                    }: ITokenAndId): Promise<{data: ITodoList}> => {
+                                      console.log(todoId)
+                                  const {data} = await axios.get(
+                                    `http://localhost:8080/todos/${todoId}`,
+                                    {
+                                      headers: {
+                                        'Authorization': axiosHeader
+                                      }
+                                    }
+                                    )
     return data;
 }
 

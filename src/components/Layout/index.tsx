@@ -1,24 +1,19 @@
 import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
-import { axiosHeader } from "../../utils/auth"
-
-interface GlobalLayoutProps{
-    children: React.ReactNode
-}
 
 
-const Layout = ( { children }: GlobalLayoutProps) => {
+const Layout = () => {
     const navigate = useNavigate()
     useEffect(() => {
-
-        if (axiosHeader === "null") {
+        const header = localStorage.getItem('token') ?? "null"
+        if (header === "null") {
             navigate('/login')
         } 
-    }, [axiosHeader, navigate])
+    }, [navigate])
 
     return (
         <div>
-            {children}
+            <Outlet />
         </div>
     )
 }

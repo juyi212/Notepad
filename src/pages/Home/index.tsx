@@ -1,37 +1,46 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TodoFactory from "../../components/TodoFactory";
 import { axiosHeader } from "../../utils/auth";
-import {Container} from "../Login/style"
-import  { AxiosError } from 'axios';
+import {Container, TodoContent, TodoDetailContainer, TodoList} from "./style"
 import Todo from "../../components/Todo";
-import { useNavigate } from "react-router-dom";
-import {useGetTodoList} from "../../hooks/query/todo";
+import { Outlet, useNavigate } from "react-router-dom";
+import {useGetTodoDetail, useGetTodoList} from "../../hooks/query/todo";
+import TodoDetail from "../../components/TodoDetail";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 
 const Home = () => {
-    const navigate = useNavigate()
-
     // error 처리는 나중에 
+    const queryClient = useQueryClient()
     const {data:todoList, error} = useGetTodoList(axiosHeader)
+    const [todoId, setTodoId] = useState('')
+    const [todoDetailStatus, setTodoDetailStatus] = useState(false)
 
-
-
-    useEffect(() => {
-        // const isLoggIn = useQuery(['token'], () => localStorage.getItem('token'))
-        // if (localStorage.getItem('token') === null ) navigate('/login');
-      }, []);
+    const onDetailHandler = useCallback((todoId: string) => {
+        setTodoId(todoId)
+        setTodoDetailStatus(true)
+    },[todoId,setTodoId, todoDetailStatus])
 
 
     return (
         <Container>
             <TodoFactory />
-            <div style={{marginTop: "40px"}}>
-                {todoList?.data.map(todo => (
-                    <Todo todo={todo} />
-                ))}
-            </div>
-
+            <TodoContent>
+              <TodoList>
+                  {todoList?.data.map(todo => (
+                      <Todo 
+                        todo={todo} 
+                        onDetailHandler = {onDetailHandler}
+                        />
+                      ))}
+              </TodoList>
+              <TodoDetailContainer>
+              { todoDetailStatus && <TodoDetail />}
+                {/* <TodoDetail /> */}
+            </TodoDetailContainer>
+            </TodoContent>
+                
         </Container>
     )
 }
