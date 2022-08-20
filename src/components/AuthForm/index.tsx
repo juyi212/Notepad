@@ -1,9 +1,5 @@
 import { Box, Button, Form, Input, Label, Error } from "./style";
 import { useState } from "react";
-import axios, { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom'
-import {LoginAPI, SignupAPI} from '../../api/auth'
-import { sign } from "crypto";
 import {useLogin, useSignup} from "../../hooks/query/auth";
 
 interface IProps {
@@ -11,7 +7,6 @@ interface IProps {
 }
 
 const AuthForm = ({title} : IProps) => {
-    const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailMessage, setEmailMessage] = useState('')

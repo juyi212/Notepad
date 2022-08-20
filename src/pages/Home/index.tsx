@@ -1,13 +1,14 @@
+import React, { Suspense } from 'react';
 import { useCallback, useEffect, useState } from "react";
-import TodoFactory from "../../components/TodoFactory";
 import { axiosHeader } from "../../utils/auth";
 import {Container, TodoContent, TodoDetailContainer, TodoList} from "./style"
-import Todo from "../../components/Todo";
-import { Outlet, useNavigate } from "react-router-dom";
+import TodoFactory from '../../components/TodoFactory';
 import {useGetTodoDetail, useGetTodoList} from "../../hooks/query/todo";
 import TodoDetail from "../../components/TodoDetail";
 import { useQueryClient } from "@tanstack/react-query";
+import Spinner from '../../components/Spinner';
 
+const Todo = React.lazy(() => import('../../components/Todo'));
 
 
 const Home = () => {
@@ -27,14 +28,16 @@ const Home = () => {
         <Container>
             <TodoFactory />
             <TodoContent>
-              <TodoList>
-                  {todoList?.data.map(todo => (
-                      <Todo 
-                        todo={todo} 
-                        onDetailHandler = {onDetailHandler}
-                        />
-                      ))}
-              </TodoList>
+                <TodoList>
+                    <Suspense fallback={<Spinner />}>
+                    {todoList?.data.map(todo => (
+                        <Todo 
+                            todo={todo} 
+                            onDetailHandler = {onDetailHandler}
+                            />
+                        ))}
+                    </Suspense>
+                </TodoList>
               <TodoDetailContainer>
               { todoDetailStatus && <TodoDetail />}
                 {/* <TodoDetail /> */}

@@ -1,30 +1,35 @@
-import { useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
 import { useGetTodoDetail } from "../../hooks/query/todo";
 import { axiosHeader } from "../../utils/auth";
 import { useParams } from 'react-router-dom';
-import { getTodoDetail } from "../../api/todo";
 
-// interface propsTodoDetail {
-//     todoId: string;
-// }
 
 
 const TodoDetail = () => {
     const params = useParams();
     let todoId = params.id || ""; 
-    const queryClient = useQueryClient()
+    const {data: todoDetails} = useGetTodoDetail({todoId, axiosHeader})    
 
-    // 같은 api를 여러번 호출해서 값이 오지 않는다..
-    const {data: todoDetails, error} = useGetTodoDetail({todoId, axiosHeader})    
-    console.log(todoDetails?.data)
-
-    // queryClient.invalidateQueries(useGetTodoDetail.getKey(axiosHeader))
 
     return (
         <div>
             <div>
-                <span>제목 : {todoDetails?.data.title}</span>
+                <div>
+                    <span>제목 : </span>
+                    <span>{todoDetails?.data.title}</span>
+                </div>
+                <div>
+                    <span>내용 : </span>
+                    <span>{todoDetails?.data.content}</span>
+                </div>
+                <div>
+                    <span>생성일 : </span>
+                    <span>{todoDetails?.data.createdAt}</span>
+                </div>
+                <div>
+                    <span>수정일 : </span>
+                    <span>{todoDetails?.data.updatedAt}</span>
+                </div>
+
             </div>
         </div>
     )
