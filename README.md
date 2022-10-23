@@ -149,9 +149,24 @@ export const useLogin = () => {
 **"React-query 도입 전과 후"** <br>
 SWR 을 사용해보았지만, react-query도 사용해 보고싶다는 생각을 하긴했다. <br>
 이번 사진 과제를 통해 사용해보았는데, 이전에 SWR를 쓸 때보다 목적에 맞게 잘 사용한 느낌을 받았다..! <br>
-아직 병아리 수준이긴 하지만, 클라이언트 사이드와 서버 사이드를 분리하여 상태관리를 한다는 것을 조금 더 체험하게 된 것같다. 
+아직 병아리 수준이긴 하지만, 클라이언트 사이드와 서버 사이드를 분리하여 상태관리를 한다는 것을 조금 더 체험하게 된 것같다. <br>
 
-**<느낀점>**
+```
+export const useUpdateTodo = () => {
+    const queryClient = useQueryClient();
+    const {mutate, isLoading, error} = useMutation<{ data: ITodoList }, Error, IToDoStateWithId>(updateTodo, {
+        onSuccess: async() => {
+            await queryClient.invalidateQueries(useGetTodoList.getKey(axiosHeader))
+        }
+    })
+    return {
+        mutate, isLoading, error
+    }
+  };
+  
+```
+<br>
+
 - 장황하지 않는 코드 ( 동일한 코드를 최소화 할 수 있었음 )
 - api 요청 후 성공했을 시, 다시 업데이트해야할 부분들 키값으로 서버에 데이터 요청
 
